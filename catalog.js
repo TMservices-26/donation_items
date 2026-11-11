@@ -411,7 +411,7 @@
     {
       "id":  "cr2618669-12",
       "name":  "Leather Soft Seat And Wood Side Table",
-      "category":  "Tables",
+      "category":  "Sets",
       "location":  "760 Kacena Rd, Unit 1, Hiawatha, IA 52233",
       "ticketNumber":  "CR2618669-12",
       "quantity":  null,
