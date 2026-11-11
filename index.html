@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Browse donatable items by category and location.">
+    <title>Donatable Items Catalog</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="catalog.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement" aria-label="Catalog notice">T&amp;M SERVICES <span>DONATABLE ITEMS CATALOG</span></div>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="T and M Services Donatable Items Catalog">
+        <span class="brand-mark" aria-hidden="true">T&amp;M</span>
+        <span class="brand-name">SERVICES<small>DONATABLE ITEMS CATALOG</small></span>
+      </a>
+      <span class="header-note">Browse by item or location</span>
+      <a class="header-action" href="request.html">Request furniture</a>
+    </header>
+
+    <main class="page">
+      <section id="catalog-view" aria-labelledby="page-title">
+        <div class="intro">
+          <p class="eyebrow">Browse the collection</p>
+          <h1 id="page-title">Find what you need</h1>
+          <p>Explore available items by category or location. Select an item to see its details.</p>
+        </div>
+
+        <div class="filters" aria-label="Catalog filters">
+          <label class="search-field">
+            <span>Search items</span>
+            <input id="search-input" type="search" placeholder="Try “chair” or “warehouse”">
+          </label>
+          <label>
+            <span>Category</span>
+            <select id="category-filter">
+              <option value="">All categories</option>
+            </select>
+          </label>
+          <label>
+            <span>Location</span>
+            <select id="location-filter">
+              <option value="">All locations</option>
+            </select>
+          </label>
+        </div>
+
+        <p id="result-count" class="result-count" aria-live="polite"></p>
+        <div id="item-grid" class="item-grid"></div>
+        <p id="empty-state" class="empty-state" hidden>No items match those filters. Try changing your search.</p>
+      </section>
+
+      <section id="detail-view" aria-live="polite" hidden></section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Donatable Items Catalog</p>
+    </footer>
+  </body>
+</html>
