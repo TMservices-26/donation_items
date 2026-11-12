@@ -1,7 +1,7 @@
 ﻿const items = [
   {
     id: "dm2616125",
-    name: "Side Chairs",
+    name: "Wooden Arm Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125",
@@ -28,17 +28,16 @@
   },
   {
     id: "dm2616125-d4",
-    name: "Rectangular Table",
+    name: "Adjustable Height Table",
     category: "Tables",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-D4",
     quantity: 1,
-    description: "Dimensions: 71\" x 24\"",
     images: ["images/dm2616125-d4-01.jpg"]
   },
   {
     id: "dm2616125-d6",
-    name: "Wood Side Chairs D3-D6-26",
+    name: "Wooden Side Chairs",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-D6",
@@ -47,7 +46,7 @@
   },
   {
     id: "dm2616125-07",
-    name: "Task Chairs",
+    name: "Grey Mesh Task Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-07",
@@ -56,7 +55,7 @@
   },
   {
     id: "dm2616125-14",
-    name: "4 Drawer Laterals (Flatboxed)",
+    name: "Four Drawer Lateral File Cabinet",
     category: "Storage",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-14",
@@ -65,7 +64,7 @@
   },
   {
     id: "dm2616125-15",
-    name: "Wood Mobile Pedestals",
+    name: "Three Drawer Wooden Mobile Pedestal",
     category: "Storage",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-15",
@@ -74,17 +73,16 @@
   },
   {
     id: "dm2616125-16",
-    name: "Door Credenza",
+    name: "Six Door Credenza",
     category: "Storage",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-16",
     quantity: 6,
-    description: "Dimensions: 96 x 24",
     images: ["images/dm2616125-16-01.jpg", "images/dm2616125-16-02.jpg"]
   },
   {
     id: "dm2616125-17",
-    name: "Conference Table Bases",
+    name: "Wooden Conference Table Base",
     category: "Tables",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-17",
@@ -92,17 +90,8 @@
     images: ["images/dm2616125-17-01.jpg", "images/dm2616125-17-02.jpg"]
   },
   {
-    id: "dm2616125-18",
-    name: "Table Bases",
-    category: "Tables",
-    location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    ticketNumber: "DM2616125-18",
-    quantity: 4,
-    images: ["images/dm2616125-18-01.jpg", "images/dm2616125-18-02.jpg"]
-  },
-  {
     id: "dm2616125-19",
-    name: "Chairs",
+    name: "Black Office Task Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-19",
@@ -111,37 +100,25 @@
   },
   {
     id: "dm2616125-20",
-    name: "Mobile Pedestals",
+    name: "Three Drawer Black Filing Cabinet",
     category: "Storage",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-20",
     quantity: 10,
-    description: "Black Ped, Black Handle",
     images: ["images/dm2616125-20-01.jpg"]
   },
   {
-    id: "dm2616125-21",
-    name: "Three Drawer Mobile Pedestals",
-    category: "Storage",
-    location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    ticketNumber: "DM2616125-21",
-    quantity: 10,
-    description: "Black Ped, Chrome Handle",
-    images: ["images/dm2616125-21-01.jpg"]
-  },
-  {
     id: "dm2616125-22",
-    name: "2 Drawer Mobile Pedestals",
+    name: "Two Drawer Black Filing Cabinet",
     category: "Storage",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-22",
     quantity: 10,
-    description: "Black Ped, Chrome Handle",
     images: ["images/dm2616125-22-01.jpg"]
   },
   {
     id: "dm2616125-23",
-    name: "Black Guest Chairs",
+    name: "Guest Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-23",
@@ -150,7 +127,7 @@
   },
   {
     id: "dm2616125-24",
-    name: "Context Desks",
+    name: "Context Desk",
     category: "Desks & Workstations",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-24",
@@ -159,7 +136,7 @@
   },
   {
     id: "dm2616125-25",
-    name: "Human Scale Chairs",
+    name: "Liberty Ocean Office Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-25",
@@ -177,7 +154,7 @@
   },
   {
     id: "dm2616125-27",
-    name: "White Guest Chairs",
+    name: "White Guest Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-27",
@@ -186,7 +163,7 @@
   },
   {
     id: "dm2616125-28",
-    name: "Haworth Task Chairs",
+    name: "Haworth Zody Task Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-28",
@@ -195,7 +172,7 @@
   },
   {
     id: "dm2616125-29",
-    name: "Task Chairs",
+    name: "Task Chair",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-29",
@@ -204,7 +181,7 @@
   },
   {
     id: "dm2616125-30",
-    name: "Guest Chairs",
+    name: "Grey Guest Chairs",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-30",
@@ -213,7 +190,7 @@
   },
   {
     id: "dm2616125-31",
-    name: "Haworth Unigroup Two Stations",
+    name: "Haworth Compose Office Work Station",
     category: "Desks & Workstations",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-31",
@@ -231,17 +208,16 @@
   },
   {
     id: "dm2616125-33",
-    name: "Mobile Stacking Armchair with Casters",
+    name: "Dining Chairs",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-33",
     quantity: null,
-    description: "-",
     images: ["images/dm2616125-33-01.jpg"]
   },
   {
     id: "dm2616125-34",
-    name: "Huddle Room Chairs",
+    name: "Grey Chairs",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-34",
@@ -250,7 +226,7 @@
   },
   {
     id: "dm2616125-35",
-    name: "Breakroom Chairs",
+    name: "Light Blue Chairs",
     category: "Chairs",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-35",
@@ -268,21 +244,21 @@
   },
   {
     id: "dm2616125-37",
-    name: "Glass Coffee Height Tables",
+    name: "Round Glass Table",
     category: "Tables",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-37",
     quantity: 2,
-    description: "Dimensions: 36\"",
     images: ["images/dm2616125-37-01.jpg"]
   },
   {
     id: "dm2616125-38",
-    name: "Curved Modular Soft Seating Chairs",
+    name: "Curved Modular Soft Seating",
     category: "Soft Seating",
     location: "4175 Northeast 43rd Court, Des Moines, IA 50317",
     ticketNumber: "DM2616125-38",
     quantity: 2,
+    description: "Stitching on both in front is loose; one is more prominent than the other.",
     images: ["images/dm2616125-38-01.jpg", "images/dm2616125-38-02.jpg", "images/dm2616125-38-03.jpg"]
   }
 ,
