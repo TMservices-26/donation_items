@@ -1,0 +1,6 @@
+catalog-import-review.json
+/PDF Drop/*.pdf
+/PDF Drop/Processed/
+/PDF Review/*.json
+/PDF Review/*.log
+/PDF Review/import-log.txt

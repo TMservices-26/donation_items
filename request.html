@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Request donated furniture from T&M Services.">
+    <title>Furniture Donation Request | T&amp;M Services</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="request.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement" aria-label="Catalog notice">T&amp;M SERVICES <span>DONATABLE ITEMS CATALOG</span></div>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="T and M Services Donatable Items Catalog">
+        <span class="brand-mark" aria-hidden="true">T&amp;M</span>
+        <span class="brand-name">SERVICES<small>DONATABLE ITEMS CATALOG</small></span>
+      </a>
+      <a class="header-action" href="./">Back to catalog</a>
+    </header>
+
+    <main class="page request-page">
+      <div class="request-intro">
+        <p class="eyebrow">Furniture donation request</p>
+        <h1>Tell us what you need</h1>
+        <p>Tell us who to contact, which furniture you’d like, and how you plan to receive it. Requests depend on availability; items and transportation must be confirmed.</p>
+      </div>
+
+      <form id="request-form" class="request-form">
+        <fieldset class="form-section">
+          <legend>Organization Name &amp; EIN</legend>
+          <label>
+            <span>Organization Name <span class="required">Required</span></span>
+            <input name="organizationName" type="text" autocomplete="organization" required>
+          </label>
+          <label>
+            <span>EIN <span class="optional">Optional</span></span>
+            <input name="ein" type="text" autocomplete="off">
+          </label>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>Contact Information</legend>
+          <label>
+            <span>Contact Name <span class="required">Required</span></span>
+            <input name="contactName" type="text" autocomplete="name" required>
+          </label>
+          <label>
+            <span>Email <span class="required">Required</span></span>
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+          <label>
+            <span>Phone <span class="optional">Optional</span></span>
+            <input name="phone" type="tel" autocomplete="tel">
+          </label>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>Requested Item IDs and Quantities</legend>
+          <label>
+            <span>Item IDs and Quantities <span class="required">Required</span></span>
+            <textarea name="items" rows="5" placeholder="One line per item: Item ID — Quantity" required></textarea>
+          </label>
+          <p class="field-help">Use one line per item: Item ID — Quantity.</p>
+        </fieldset>
+
+        <fieldset class="form-section">
+          <legend>Pickup or Delivery</legend>
+          <span class="field-label">How would you like to receive the furniture? <span class="required">Choose one; required</span></span>
+          <div class="radio-options">
+            <label><input name="receivingMethod" type="radio" value="Pickup arranged by us" required> Pickup arranged by us</label>
+            <label><input name="receivingMethod" type="radio" value="Request delivery, if available" required> Request delivery, if available</label>
+            <label><input name="receivingMethod" type="radio" value="Need help with transportation" required> Need help with transportation</label>
+          </div>
+          <label id="pickup-dates-field" hidden>
+            <span>Preferred pickup dates <span class="optional">If picking up</span></span>
+            <textarea name="preferredDates" rows="3" placeholder="List a date range and any preferred times."></textarea>
+          </label>
+          <label id="delivery-address-field" hidden>
+            <span>Delivery address <span class="optional">If requesting delivery</span></span>
+            <textarea name="deliveryAddress" rows="3" placeholder="Include any stairs or access restrictions. Delivery is not guaranteed."></textarea>
+          </label>
+        </fieldset>
+
+        <fieldset class="form-section condition-section">
+          <legend>Used Furniture — As-Is Condition</legend>
+          <p>All donated furniture is used and provided “as is,” in its current condition, with existing wear, imperfections, or defects. No warranties or guarantees are provided regarding condition, quality, or suitability for a particular use. Recipients should inspect items before accepting them and determine whether they meet their organization’s needs.</p>
+          <label class="checkbox-option">
+            <input name="conditionAcknowledgment" type="checkbox" required>
+            <span><strong>Condition Acknowledgment — Required</strong><br>I understand the furniture is used and provided as is, without warranties or guarantees. We can inspect it before accepting it and will decide whether it meets our needs.</span>
+          </label>
+        </fieldset>
+
+        <p class="email-notice">Selecting the button below opens a draft addressed to T&amp;M Services in your email app. Your request is not sent until you send that email. The website does not store your form information; your EIN will be included in the email draft if provided.</p>
+        <button class="submit-button" type="submit">Prepare email request</button>
+        <p id="submission-message" class="submission-message" role="status" aria-live="polite" hidden></p>
+      </form>
+    </main>
+
+    <footer class="site-footer">
+      <p>Donatable Items Catalog</p>
+    </footer>
+  </body>
+</html>
