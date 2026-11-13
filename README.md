@@ -30,7 +30,7 @@ Item photos appear on catalog cards and in the item detail view. Selecting a car
 
 ## Furniture donation requests
 
-The **Request furniture** button opens `request.html`. The form opens a prefilled email draft addressed to `page@tmservices.net`; the submitter must send that email to complete the request. The static website does not store form entries or confirm email delivery.
+The **Request furniture** button opens `request.html`. Submitting the form sends the request through Web3Forms (access key in `request.js`) to the email address configured in your Web3Forms account. The website itself does not store form entries.
 
 ## Import inventory from a PDF
 

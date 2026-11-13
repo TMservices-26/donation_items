@@ -3,6 +3,8 @@ const pickupDatesField = document.querySelector("#pickup-dates-field");
 const deliveryAddressField = document.querySelector("#delivery-address-field");
 const submissionMessage = document.querySelector("#submission-message");
 const recipient = "page@tmservices.net";
+const endpoint = "https://api.web3forms.com/submit";
+const accessKey = "e2de8ec1-ab34-480d-9e3f-56f73d361967";
 
 form.addEventListener("change", (event) => {
   if (event.target.name !== "receivingMethod") {
@@ -14,10 +16,13 @@ form.addEventListener("change", (event) => {
   deliveryAddressField.hidden = method !== "Request delivery, if available";
 });
 
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", async (event) => {
   event.preventDefault();
 
   const values = new FormData(form);
+  if (values.get("botcheck")) {
+    return;
+  }
   const message = [
     `Organization Name: ${values.get("organizationName")}`,
     `EIN: ${values.get("ein") || "Not provided"}`,
@@ -37,7 +42,35 @@ form.addEventListener("submit", (event) => {
   ].join("\n");
   const subject = `Furniture Donation Request - ${values.get("organizationName")}`;
 
-  submissionMessage.textContent = "Your email app should open with your request. Send the email there to complete your request. Your request does not reserve items.";
+  const submitButton = form.querySelector(".submit-button");
+  submitButton.disabled = true;
+  submissionMessage.textContent = "Sending your request...";
   submissionMessage.hidden = false;
-  window.location.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: accessKey,
+        subject,
+        from_name: values.get("organizationName"),
+        name: values.get("contactName"),
+        email: values.get("email"),
+        message
+      })
+    });
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || "Request failed");
+    }
+    form.reset();
+    pickupDatesField.hidden = true;
+    deliveryAddressField.hidden = true;
+    submissionMessage.textContent = "Thank you! Your request was sent to T&M Services. We will contact you to confirm availability. Your request does not reserve items.";
+  } catch (error) {
+    submissionMessage.textContent = `We could not send your request. Please try again or email ${recipient} directly.`;
+  } finally {
+    submitButton.disabled = false;
+  }
 });
