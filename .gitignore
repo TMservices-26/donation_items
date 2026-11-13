@@ -4,3 +4,9 @@ catalog-import-review.json
 /PDF Review/*.json
 /PDF Review/*.log
 /PDF Review/import-log.txt
+
+# Local PDF automation lives only on the owner's PC
+*.ps1
+*.bat
+extract-pdf-images.py
+requirements.txt
