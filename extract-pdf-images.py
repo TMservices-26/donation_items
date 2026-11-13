@@ -14,8 +14,10 @@ def main():
 
     args.output_directory.mkdir(parents=True, exist_ok=True)
     extracted = []
+    pages = []
     reader = PdfReader(str(args.pdf))
     for page_number, page in enumerate(reader.pages, start=1):
+        pages.append({"page": page_number, "text": page.extract_text() or ""})
         for image_number, image in enumerate(page.images, start=1):
             width, height = image.image.size
             aspect_ratio = width / height
@@ -33,7 +35,7 @@ def main():
             extracted.append({"page": page_number, "filename": filename})
 
     args.manifest.parent.mkdir(parents=True, exist_ok=True)
-    args.manifest.write_text(json.dumps({"images": extracted}), encoding="utf-8")
+    args.manifest.write_text(json.dumps({"images": extracted, "pages": pages}), encoding="utf-8")
 
 
 if __name__ == "__main__":
