@@ -10,6 +10,7 @@ $processedDirectory = Join-Path $dropDirectory "Processed"
 $logPath = Join-Path $reviewDirectory "import-log.txt"
 $importerPath = Join-Path $PSScriptRoot "import-pdf.ps1"
 $statusScriptPath = Join-Path $PSScriptRoot "show-pdf-import-status.ps1"
+$publishScriptPath = Join-Path $PSScriptRoot "publish-catalog.ps1"
 
 foreach ($directory in @($dropDirectory, $reviewDirectory, $processedDirectory)) {
   New-Item -ItemType Directory -Path $directory -Force | Out-Null
@@ -62,6 +63,39 @@ function Show-ImportStatus([string]$Status, [string]$PdfName, [string]$Details) 
   Start-Process -FilePath $powerShellPath -ArgumentList $arguments -WindowStyle Normal
 }
 
+function Get-CatalogSignature {
+  $catalogHash = (Get-FileHash -LiteralPath (Join-Path $PSScriptRoot "catalog.js") -Algorithm SHA256).Hash
+  $imagesPath = Join-Path $PSScriptRoot "images"
+  $images = @()
+  if (Test-Path -LiteralPath $imagesPath) {
+    $images = @(Get-ChildItem -LiteralPath $imagesPath -File | Sort-Object Name | ForEach-Object { "{0}:{1}:{2}" -f $_.Name, $_.Length, $_.LastWriteTimeUtc.Ticks })
+  }
+  return "$catalogHash|" + ($images -join ",")
+}
+
+$publishedSignature = $null
+$nextPublishAttempt = [datetime]::MinValue
+
+function Publish-CatalogIfChanged {
+  if ((Get-Date) -lt $nextPublishAttempt -or -not (Test-Path -LiteralPath $publishScriptPath -PathType Leaf)) {
+    return
+  }
+  try {
+    $signature = Get-CatalogSignature
+    if ($signature -eq $script:publishedSignature) {
+      return
+    }
+    $output = @(& powershell.exe -NoProfile -ExecutionPolicy Bypass -File $publishScriptPath 2>&1)
+    if ($LASTEXITCODE -ne 0) {
+      throw (($output | ForEach-Object { "$_".Trim() } | Where-Object { $_ }) -join " ")
+    }
+    $script:publishedSignature = $signature
+    Write-ImportLog ("GitHub publish: " + (($output | ForEach-Object { "$_".Trim() } | Where-Object { $_ }) -join " "))
+  } catch {
+    $script:nextPublishAttempt = (Get-Date).AddMinutes(5)
+    Write-ImportLog "ERROR publishing to GitHub (will retry in 5 minutes): $($_.Exception.Message)"
+  }
+}
 $attemptedFiles = @{}
 $lockedFiles = @{}
 Write-ImportLog "Started watching '$dropDirectory'. PDFs are imported automatically; completion opens a PowerShell window."
@@ -160,10 +194,12 @@ while ($true) {
       $summary = ($applyOutput | ForEach-Object { "$_".Trim() } | Where-Object { $_ }) -join " "
       Write-ImportLog "Imported '$($file.Name)' automatically. $summary Original PDF moved to Processed."
       Show-ImportStatus "Completed" $file.Name $summary
+      Publish-CatalogIfChanged
     } catch {
       Write-ImportLog "ERROR moving '$($file.Name)' to Processed after creating '$([System.IO.Path]::GetFileName($draftPath))': $($_.Exception.Message)"
       Show-ImportStatus "Failed" $file.Name $_.Exception.Message
     }
   }
+  Publish-CatalogIfChanged
   Start-Sleep -Seconds 3
 }

@@ -183,61 +183,63 @@ function Get-JobSiteLocation($Pages) {
 function Get-PageRecords([string]$Text, [int]$PageNumber, [string[]]$Categories, [string[]]$ImageNames, $JobSite) {
   $starts = [regex]::Matches(
     $Text,
-    "(?i)\b(?<base>$ticketBasePattern)(?:\.(?<suffix>\d{1,2}))?\s*(?:[-\u2013\u2022]\s*)?"
+    "(?im)^[ \t]*(?<base>$ticketBasePattern)(?:\.(?<suffix>\d{1,2}))?[ \t]*[-\u2013][ \t]*(?<title>[^\r\n]+)"
   )
   for ($index = 0; $index -lt $starts.Count; $index++) {
     $match = $starts[$index]
     $segmentEnd = if ($index + 1 -lt $starts.Count) { $starts[$index + 1].Index } else { $Text.Length }
     $segment = $Text.Substring($match.Index, $segmentEnd - $match.Index)
-    $headerEnd = [regex]::Match($segment, "(?i)\s+Customer\s+Warehouse\b")
-    if (-not $headerEnd.Success) {
-      continue
+    $title = $match.Groups["title"].Value.Trim()
+    $pageMarkers = [regex]::Matches($Text.Substring(0, $match.Index), "(?m)^\[\[PDF_PAGE:(?<number>\d+)\]\]\s*$")
+    $sourcePage = if ($pageMarkers.Count -gt 0) {
+      [int]$pageMarkers[$pageMarkers.Count - 1].Groups["number"].Value
+    } else {
+      $PageNumber
     }
-
-    $title = $segment.Substring($match.Length, $headerEnd.Index - $match.Length)
-    $title = [regex]::Replace($title, "(?i)^\s*(?:[-\u2013\u2022]\s*)?", "")
+    $sourcePages = [System.Collections.Generic.List[int]]::new()
+    $sourcePages.Add($sourcePage)
+    foreach ($segmentPageMarker in [regex]::Matches($segment, "(?m)^\[\[PDF_PAGE:(?<number>\d+)\]\]\s*$")) {
+      $segmentPageNumber = [int]$segmentPageMarker.Groups["number"].Value
+      if (-not $sourcePages.Contains($segmentPageNumber)) {
+        $sourcePages.Add($segmentPageNumber)
+      }
+    }
     if ($title -match "(?i)\bDonatable\s+Items\b") {
       continue
     }
 
     $quantity = $null
     $quantityConfidence = 0
-    if ($title -match "^\s*(?<quantity>\d{1,4})\s+(?<name>.+)$") {
-      $quantity = [int]$Matches.quantity
-      $quantityConfidence = 0.95
-      $title = $Matches.name
-    } else {
-      $form = [regex]::Match($segment, "(?is)Receiving\s+Form(?<fields>.*?)(?:Documents|$)")
-      if ($form.Success -and $form.Groups["fields"].Value -match "(?i)\b(?:chairs?|tables?|pieces?|quantity|qty)\s*[:\-]?\s*(?<quantity>\d{1,4})\b") {
-        $quantity = [int]$Matches.quantity
-        $quantityConfidence = 0.75
-      }
+    $description = ""
+    $form = [regex]::Match($segment, "(?is)\bReceiving\s+Form\b(?<fields>.*?)(?:\bDocuments\b|$)")
+    if (-not $form.Success) {
+      continue
     }
-
-    $descriptionParts = [System.Collections.Generic.List[string]]::new()
-    $dimensionMatch = [regex]::Match(
-      $title,
-      "(?i)\b(?<dimensions>\d{1,3}(?:\.\d+)?\s*(?:[""\u201d]|in(?:ches)?)?\s*[x\u00d7]\s*\d{1,3}(?:\.\d+)?(?:\s*(?:[""\u201d]|in(?:ches)?))?)"
+    $fields = [regex]::Replace($form.Groups["fields"].Value, "(?m)^\[\[PDF_PAGE:\d+\]\]\s*$", "")
+    $quantityMatch = [regex]::Match(
+      $fields,
+      "(?im)^\s*Total\s+Pieces\s*:?\s*(?<quantity>\d{1,4})\s*$"
     )
-    if ($dimensionMatch.Success) {
-      $dimensions = [regex]::Replace($dimensionMatch.Groups["dimensions"].Value, "\s+", " ")
-      $dimensions = [regex]::Replace($dimensions, "(?i)\s*[x\u00d7]\s*", " x ")
-      $descriptionParts.Add("Dimensions: $dimensions")
-      $title = $title.Remove($dimensionMatch.Index, $dimensionMatch.Length)
+    if ($quantityMatch.Success) {
+      $quantity = [int]$quantityMatch.Groups["quantity"].Value
+      $quantityConfidence = 0.95
     } else {
-      $singleDimension = [regex]::Match($title, "(?i)\b\d{1,3}(?:\.\d+)?\s*(?:[""\u201d]|in(?:ches)?)")
-      if ($singleDimension.Success) {
-        $descriptionParts.Add("Dimensions: $($singleDimension.Value.Trim())")
-        $title = $title.Remove($singleDimension.Index, $singleDimension.Length)
+      $quantityMatch = [regex]::Match(
+        $fields,
+        "(?im)^\s*Total\s+Pieces\s*:?\s*\r?\n\s*(?<quantity>\d{1,4})\s*$"
+      )
+      if ($quantityMatch.Success) {
+        $quantity = [int]$quantityMatch.Groups["quantity"].Value
+        $quantityConfidence = 0.95
       }
     }
 
-    $damageNotes = [regex]::Match($segment, "(?is)Damage\s+Notes\s+(?<notes>.*?)(?:Documents|$)")
-    if ($damageNotes.Success) {
-      $damageDescription = [regex]::Replace($damageNotes.Groups["notes"].Value, "\s+", " ").Trim()
-      if ($damageDescription) {
-        $descriptionParts.Add("Damage: $damageDescription")
-      }
+    $descriptionMatch = [regex]::Match(
+      $fields,
+      "(?is)\bPartial\s+Delivery\s+Notes\b\s*:?\s*(?<description>.*)$"
+    )
+    if ($descriptionMatch.Success) {
+      $description = [regex]::Replace($descriptionMatch.Groups["description"].Value, "\s+", " ").Trim()
     }
 
     $name = Convert-ToCatalogName $title
@@ -284,9 +286,10 @@ function Get-PageRecords([string]$Text, [int]$PageNumber, [string[]]$Categories,
       jobSiteOriginText = $JobSite.OriginText
       ticketNumber = $ticketNumber
       quantity = $quantity
-      description = $descriptionParts -join "; "
+      description = $description
       images = @($images | ForEach-Object { "images/$_" })
-      sourcePage = $PageNumber
+      sourcePage = $sourcePage
+      sourcePages = @($sourcePages.ToArray())
       matchQuality = [pscustomobject]@{
         category = if ($category.Confidence -ge 0.9) { "high" } elseif ($category.Confidence -gt 0) { "medium" } else { "unmatched" }
         quantity = if ($quantityConfidence -gt 0) { "explicit" } else { "unverified" }
@@ -674,6 +677,17 @@ if ($extractExitCode -ne 0) {
 }
 $imageManifest = ConvertFrom-Json -InputObject (Get-Content -LiteralPath $manifestPath -Raw)
 $embeddedImages = @($imageManifest.images)
+$pdfTextByPage = @{}
+foreach ($pdfPage in @($imageManifest.pages)) {
+  if (-not [string]::IsNullOrWhiteSpace([string]$pdfPage.text)) {
+    $pdfTextByPage[[int]$pdfPage.page] = [string]$pdfPage.text
+  }
+}
+foreach ($page in $pages) {
+  if ($pdfTextByPage.ContainsKey([int]$page.Number)) {
+    $page.Text = $pdfTextByPage[[int]$page.Number]
+  }
+}
 $embeddedImagesByPage = @{}
 foreach ($embeddedImage in $embeddedImages) {
   $pageNumber = [int]$embeddedImage.page
@@ -686,20 +700,38 @@ $reservedImageNames = [System.Collections.Generic.List[string]]::new()
 $reservedImageNames.AddRange([string[]]$imageNames)
 $usedStagedImages = @{}
 $jobSite = Get-JobSiteLocation $pages
+$combinedText = [System.Text.StringBuilder]::new()
 foreach ($page in $pages) {
-  $pageItems = @(Get-PageRecords $page.Text $page.Number $categories $imageNames $jobSite)
+  [void]$combinedText.AppendLine("[[PDF_PAGE:$($page.Number)]]")
+  [void]$combinedText.AppendLine([string]$page.Text)
+}
+$allPageItems = @(Get-PageRecords $combinedText.ToString() 0 $categories $imageNames $jobSite)
+foreach ($page in $pages) {
+  $pageItems = @($allPageItems | Where-Object { $_.sourcePage -eq [int]$page.Number })
   foreach ($item in $pageItems) {
-    $pageImages = @()
-    if ($embeddedImagesByPage.ContainsKey([int]$page.Number)) {
-      $pageImages = @($embeddedImagesByPage[[int]$page.Number].ToArray())
+    $pageImages = [System.Collections.Generic.List[object]]::new()
+    $sharedPageHasImages = $false
+    foreach ($recordPage in @($item.sourcePages)) {
+      $recordsOnPage = @($allPageItems | Where-Object { @($_.sourcePages) -contains [int]$recordPage })
+      if (-not $embeddedImagesByPage.ContainsKey([int]$recordPage)) {
+        continue
+      }
+      if ($recordsOnPage.Count -gt 1) {
+        $sharedPageHasImages = $true
+        continue
+      }
+      foreach ($pageImage in $embeddedImagesByPage[[int]$recordPage].ToArray()) {
+        $pageImages.Add($pageImage)
+      }
     }
-    if ($pageItems.Count -gt 1 -and $pageImages.Count -gt 0) {
+    if ($sharedPageHasImages) {
       $item.reviewNotes += "Multiple inventory items share this PDF page, so embedded photos may need to be assigned manually."
-    } elseif ($pageImages.Count -gt 0) {
+    }
+    if ($pageImages.Count -gt 0) {
       $embeddedImageFiles = [System.Collections.Generic.List[object]]::new()
       $embeddedImagePaths = [System.Collections.Generic.List[string]]::new()
       $imageSequence = 1
-      foreach ($pageImage in $pageImages) {
+      foreach ($pageImage in $pageImages.ToArray()) {
         $extension = [System.IO.Path]::GetExtension([string]$pageImage.filename).ToLowerInvariant()
         do {
           $targetName = "{0}-{1:00}{2}" -f $item.id, $imageSequence, $extension
