@@ -382,6 +382,51 @@ function Add-CatalogItemImages([string]$Catalog, [string]$TicketNumber, [string[
   return [pscustomobject]@{ Catalog = $Catalog; Changed = $true }
 }
 
+function Remove-MissingCatalogItems([string]$Catalog, [string[]]$PdfTickets) {
+  $pdfSet = @($PdfTickets | ForEach-Object { $_.ToUpperInvariant() })
+  $bases = @($pdfSet | ForEach-Object { if ($_ -match '^([A-Z]{2}\d{7})') { $Matches[1] } } | Sort-Object -Unique)
+  $result = [pscustomobject]@{ Catalog = $Catalog; Removed = @(); Images = @() }
+  if ($bases.Count -eq 0) { return $result }
+  $blocks = [regex]::Matches($Catalog, '(?ms)^  \{\r?\n.*?^  \}')
+  if ($blocks.Count -eq 0) { return $result }
+  $keep = [System.Collections.Generic.List[string]]::new()
+  $removedImages = [System.Collections.Generic.List[string]]::new()
+  $keptImages = @{}
+  foreach ($block in $blocks) {
+    $ticketMatch = [regex]::Match($block.Value, '"?ticketNumber"?\s*:\s*"([^"]+)"')
+    $ticket = if ($ticketMatch.Success) { $ticketMatch.Groups[1].Value.ToUpperInvariant() } else { "" }
+    $sameJob = $false
+    foreach ($base in $bases) {
+      if ($ticket -eq $base -or $ticket.StartsWith("$base-")) { $sameJob = $true }
+    }
+    $images = @([regex]::Matches($block.Value, '"(images/[^"]+)"') | ForEach-Object { $_.Groups[1].Value })
+    if ($sameJob -and $pdfSet -notcontains $ticket) {
+      $result.Removed += $ticket
+      $images | ForEach-Object { $removedImages.Add($_) }
+    } else {
+      $keep.Add($block.Value)
+      $images | ForEach-Object { $keptImages[$_] = $true }
+    }
+  }
+  if ($result.Removed.Count -eq 0) { return $result }
+  $start = $blocks[0].Index
+  $last = $blocks[$blocks.Count - 1]
+  $end = $last.Index + $last.Length
+  $separator = if ($Catalog -match "`r`n") { ",`r`n" } else { ",`n" }
+  $result.Catalog = $Catalog.Substring(0, $start) + ($keep -join $separator) + $Catalog.Substring($end)
+  $result.Images = @($removedImages | Where-Object { -not $keptImages.ContainsKey($_) } | Sort-Object -Unique)
+  return $result
+}
+function Remove-CatalogImageFiles([string]$CatalogPath, [string[]]$Images) {
+  $root = Split-Path -Parent $CatalogPath
+  foreach ($image in $Images) {
+    $path = [System.IO.Path]::GetFullPath((Join-Path $root $image))
+    if ($path.StartsWith((Join-Path $root "images") + [System.IO.Path]::DirectorySeparatorChar, [System.StringComparison]::OrdinalIgnoreCase) -and (Test-Path -LiteralPath $path -PathType Leaf)) {
+      Remove-Item -LiteralPath $path -Force
+    }
+  }
+}
+
 function Read-PdfOcr([string]$Path) {
   Add-Type -AssemblyName System.Runtime.WindowsRuntime
   $storageFileType = Get-WinRtType "Windows.Storage.StorageFile"
@@ -601,15 +646,27 @@ if ($Apply) {
     $existingTickets += ([string]$item.ticketNumber).ToUpperInvariant()
     $existingIds += ([string]$item.id).ToLowerInvariant()
   }
+  $removedTickets = @()
+  $removedImageFiles = @()
+  if ($AutoApply) {
+    $pruned = Remove-MissingCatalogItems $catalog @($approved | ForEach-Object { [string]$_.ticketNumber })
+    if ($pruned.Removed.Count -gt 0) {
+      $catalog = $pruned.Catalog
+      $removedTickets = $pruned.Removed
+      $removedImageFiles = $pruned.Images
+      Write-Output "Removed $($removedTickets.Count) item(s) missing from the PDF: $($removedTickets -join ', ')."
+    }
+  }
   $photoNotice = ""
   if ($skippedExistingImages -gt 0) {
     $photoNotice = " Skipped embedded photos for $skippedExistingImages existing ticket(s); review their draft photos before adding them."
   }
   if ($newItems.Count -eq 0) {
     $installedImages = Install-EmbeddedImages $imagesToInstall.ToArray() $ReviewPath $CatalogPath
-    if ($changedLocations -gt 0 -or $changedImages -gt 0) {
+    if ($changedLocations -gt 0 -or $changedImages -gt 0 -or $removedTickets.Count -gt 0) {
       Set-Content -LiteralPath $CatalogPath -Value $catalog -NoNewline -Encoding utf8
-      Write-Output "Updated $changedLocations existing catalog location(s), added photos to $changedImages existing item(s), and moved $installedImages embedded image(s) to the images folder.$photoNotice"
+      Remove-CatalogImageFiles $CatalogPath $removedImageFiles
+      Write-Output "Removed $($removedTickets.Count) missing item(s), updated $changedLocations existing catalog location(s), added photos to $changedImages existing item(s), and moved $installedImages embedded image(s) to the images folder.$photoNotice"
     } else {
       Write-Output "No new items or catalog changes. Moved $installedImages embedded image(s) to the images folder.$photoNotice"
     }
@@ -628,7 +685,8 @@ if ($Apply) {
   $insert = ",`r`n" + $serialized + "`r`n"
   $catalog = $catalog.Insert($arrayEnd[0].Index, $insert)
   Set-Content -LiteralPath $CatalogPath -Value $catalog -NoNewline -Encoding utf8
-  Write-Output "Added $($newItems.Count) approved item(s), updated $changedLocations existing location(s), added photos to $changedImages existing item(s), and moved $installedImages embedded image(s) to the images folder in '$CatalogPath'.$photoNotice"
+      Remove-CatalogImageFiles $CatalogPath $removedImageFiles
+  Write-Output "Added $($newItems.Count) approved item(s), removed $($removedTickets.Count) missing item(s), updated $changedLocations existing location(s), added photos to $changedImages existing item(s), and moved $installedImages embedded image(s) to the images folder in '$CatalogPath'.$photoNotice"
   exit 0
 }
 
