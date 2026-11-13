@@ -26,6 +26,7 @@
       </div>
 
       <form id="request-form" class="request-form">
+        <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none">
         <fieldset class="form-section">
           <legend>Organization Name &amp; EIN</legend>
           <label>
@@ -90,8 +91,8 @@
           </label>
         </fieldset>
 
-        <p class="email-notice">Selecting the button below opens a draft addressed to T&amp;M Services in your email app. Your request is not sent until you send that email. The website does not store your form information; your EIN will be included in the email draft if provided.</p>
-        <button class="submit-button" type="submit">Prepare email request</button>
+        <p class="email-notice">Submitting this form sends your request directly to T&amp;M Services; it is delivered through the Web3Forms service and is not stored on this website. Your request does not reserve items until we confirm availability. Your EIN will be included if provided.</p>
+        <button class="submit-button" type="submit">Send request</button>
         <p id="submission-message" class="submission-message" role="status" aria-live="polite" hidden></p>
       </form>
     </main>
