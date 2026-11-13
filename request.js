@@ -12,7 +12,7 @@ form.addEventListener("change", (event) => {
   }
 
   const method = event.target.value;
-  pickupDatesField.hidden = method !== "Pickup arranged by us";
+  pickupDatesField.hidden = method !== "Pickup arranged by requester";
   deliveryAddressField.hidden = method !== "Request delivery, if available";
 });
 
