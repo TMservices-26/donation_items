@@ -106,6 +106,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-19",
     "quantity": 20,
+    "onHold": 16,
     "images": [
       "images/dm2616125-19-01.jpg"
     ],
@@ -118,6 +119,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-20",
     "quantity": 10,
+    "onHold": 5,
     "images": [
       "images/dm2616125-20-01.jpg"
     ],
@@ -155,6 +157,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-24",
     "quantity": 3,
+    "onHold": 2,
     "images": [
       "images/dm2616125-24-01.jpg",
       "images/dm2616125-24-02.jpg"
@@ -193,6 +196,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-27",
     "quantity": 18,
+    "onHold": 8,
     "images": [
       "images/dm2616125-27-01.jpg",
       "images/dm2616125-27-02.jpg",
@@ -207,6 +211,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-28",
     "quantity": 15,
+    "onHold": 15,
     "images": [
       "images/dm2616125-28-01.jpg"
     ],
@@ -282,6 +287,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-34",
     "quantity": 4,
+    "onHold": 4,
     "images": [
       "images/dm2616125-34-01.jpg"
     ],
@@ -306,6 +312,7 @@ const items = [
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-36",
     "quantity": 4,
+    "onHold": 4,
     "images": [
       "images/dm2616125-36-01.jpg"
     ],
@@ -344,6 +351,7 @@ const items = [
     "location": "760 Kacena Rd, Unit 1, Hiawatha, IA 52233",
     "ticketNumber": "CR2618669",
     "quantity": 3,
+    "onHold": 3,
     "description": "Tan leather armchair with a cushioned seat and backrest. The chair features a simple, modern design with rolled armrests and a sturdy frame",
     "images": [
       "images/cr2618669-d1-01.jpg"
@@ -417,6 +425,7 @@ const items = [
     "location": "760 Kacena Rd, Unit 1, Hiawatha, IA 52233",
     "ticketNumber": "CR2618669-D6",
     "quantity": 1,
+    "onHold": 1,
     "description": "tan leather armchair with a tufted seat and backres",
     "images": [
       "images/cr2618669-07-01.jpg"
@@ -515,9 +524,22 @@ function addOptions(select, values) {
   }
 }
 
+function holdText(item) {
+  if (!item.onHold) {
+    return "";
+  }
+  if (item.quantity === null || item.onHold >= item.quantity) {
+    return "ON HOLD";
+  }
+  return `ON HOLD: ${item.onHold} of ${item.quantity}`;
+}
+
 function makeItemCard(item) {
   const link = document.createElement("a");
   link.className = "item-card";
+  if (item.onHold) {
+    link.classList.add("is-on-hold");
+  }
   link.href = `?item=${encodeURIComponent(item.id)}`;
 
   const category = document.createElement("span");
@@ -530,6 +552,13 @@ function makeItemCard(item) {
   const location = document.createElement("p");
   location.className = "item-location";
   location.textContent = `Location: ${item.location}`;
+
+  if (item.onHold) {
+    const badge = document.createElement("span");
+    badge.className = "hold-badge";
+    badge.textContent = holdText(item);
+    link.append(badge);
+  }
 
   if (item.images.length > 0) {
     const image = document.createElement("img");
@@ -596,6 +625,10 @@ function renderDetail(item) {
     ? "Quantity: Not specified"
     : `Quantity: ${item.quantity}`;
 
+  const holdNotice = document.createElement("p");
+  holdNotice.className = "hold-notice";
+  holdNotice.textContent = `${holdText(item)} - already selected by someone, not currently available.`;
+
   const description = document.createElement("p");
   description.className = "detail-description";
   description.textContent = item.description ?? "";
@@ -606,7 +639,11 @@ function renderDetail(item) {
 
   const panel = document.createElement("article");
   panel.className = "detail-panel";
-  panel.append(category, heading, location, quantity);
+  panel.append(category, heading);
+  if (item.onHold) {
+    panel.append(holdNotice);
+  }
+  panel.append(location, quantity);
   if (item.description) {
     panel.append(description);
   }

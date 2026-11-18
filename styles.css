@@ -519,3 +519,39 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.item-card {
+  position: relative;
+}
+
+.item-card.is-on-hold .item-image {
+  opacity: 0.55;
+  filter: grayscale(0.6);
+}
+
+.hold-badge,
+.hold-notice {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border-radius: 2px;
+  color: #fff;
+  background: #b45309;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+
+.hold-badge {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  z-index: 1;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.hold-notice {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.7rem 1rem;
+  letter-spacing: 0.02em;
+}
