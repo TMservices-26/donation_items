@@ -47,8 +47,9 @@ a {
   justify-content: space-between;
   gap: 1.5rem;
   padding: 1.4rem max(1.25rem, calc((100% - 1120px) / 2));
-  color: #fff;
-  background: var(--tm-charcoal);
+  color: var(--tm-charcoal);
+  background: #fff;
+  border-bottom: 3px solid var(--tm-red);
 }
 
 .brand {
@@ -56,6 +57,12 @@ a {
   align-items: center;
   gap: 0.7rem;
   text-decoration: none;
+}
+
+.brand-logo {
+  display: block;
+  width: clamp(150px, 22vw, 230px);
+  height: auto;
 }
 
 .brand-mark {
@@ -74,7 +81,7 @@ a {
 }
 
 .brand-name small {
-  color: #c6c6c6;
+  color: #5a5d62;
   font-size: 0.59rem;
   letter-spacing: 0.1em;
 }
@@ -82,7 +89,7 @@ a {
 .header-note {
   padding: 0.75rem 1rem;
   border-left: 3px solid var(--tm-red);
-  color: #e2e2e2;
+  color: #444;
   font-size: 0.9rem;
 }
 
