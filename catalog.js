@@ -25,18 +25,6 @@ const items = [
     "description": "mesh office chairs with green and yellow checkered seats"
   },
   {
-    "id": "dm2616125-d4",
-    "name": "Adjustable Height Table",
-    "category": "Tables",
-    "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    "ticketNumber": "DM2616125-D4",
-    "quantity": 1,
-    "images": [
-      "images/dm2616125-d4-01.jpg"
-    ],
-    "description": "71\"X24\" rectangular adjustable height office table with a light wood finish and metal legs"
-  },
-  {
     "id": "dm2616125-07",
     "name": "Grey Mesh Task Chair",
     "category": "Chairs",
