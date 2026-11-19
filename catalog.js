@@ -93,8 +93,8 @@ const items = [
     "category": "Chairs",
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-19",
-    "quantity": 20,
-    "onHold": 16,
+    "quantity": 8,
+    "onHold": 8,
     "images": [
       "images/dm2616125-19-01.jpg"
     ],
