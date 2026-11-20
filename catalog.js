@@ -333,19 +333,6 @@ const items = [
     ]
   },
   {
-    "id": "cr2618669",
-    "name": "Brown Leather Lounge Chairs",
-    "category": "Chairs",
-    "location": "760 Kacena Rd, Unit 1, Hiawatha, IA 52233",
-    "ticketNumber": "CR2618669",
-    "quantity": 3,
-    "onHold": 3,
-    "description": "Tan leather armchair with a cushioned seat and backrest. The chair features a simple, modern design with rolled armrests and a sturdy frame",
-    "images": [
-      "images/cr2618669-d1-01.jpg"
-    ]
-  },
-  {
     "id": "cr2618669-d1",
     "name": "Steelcase Task Chairs",
     "category": "Chairs",
