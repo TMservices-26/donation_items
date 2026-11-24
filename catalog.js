@@ -431,18 +431,6 @@ const items = [
   }
 ,
     {
-      "id":  "dm2616125-39",
-      "name":  "Aeron Task Chair",
-      "category":  "Chairs",
-      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
-      "ticketNumber":  "DM2616125-39",
-      "quantity":  1,
-      "description":  "",
-      "images":  [
-  
-                 ]
-  },
-    {
       "id":  "dm2616125-40",
       "name":  "Leather Chair Tall Back",
       "category":  "Chairs",
