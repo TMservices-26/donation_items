@@ -160,10 +160,11 @@ const items = [
     "quantity": 18,
     "onHold": 8,
     "images": [
-      "images/dm2616125-27-01.jpg",
-      "images/dm2616125-27-02.jpg",
-      "images/dm2616125-27-03.jpg"
-    ],
+        "images/dm2616125-27-03.jpg",
+        "images/dm2616125-27-01.jpg",
+        "images/dm2616125-27-02.jpg",
+        "images/dm2616125-27-03.jpg"
+      ],
     "description": "White Guest Chair with a modern design, featuring a white upholstered seat and backrest framed by dark wooden armrests and legs. Some cracking on the leather."
   },
   {
