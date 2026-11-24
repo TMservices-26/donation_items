@@ -451,8 +451,8 @@ const items = [
       "quantity":  4,
       "description":  "",
       "images":  [
-  
-                 ]
+        "images/dm2616125-41-01.jpg"
+      ]
   },
     {
       "id":  "dm2616125-42",
@@ -463,8 +463,8 @@ const items = [
       "quantity":  9,
       "description":  "",
       "images":  [
-  
-                 ]
+        "images/dm2616125-42-01.jpg"
+      ]
   },
     {
       "id":  "dm2616125-43",
@@ -475,8 +475,8 @@ const items = [
       "quantity":  4,
       "description":  "",
       "images":  [
-  
-                 ]
+        "images/dm2616125-43-01.jpg"
+      ]
   },
     {
       "id":  "dm2616125-44",
@@ -487,8 +487,8 @@ const items = [
       "quantity":  3,
       "description":  "",
       "images":  [
-  
-                 ]
+        "images/dm2616125-44-01.jpg"
+      ]
   },
     {
       "id":  "dm2616125-45",
