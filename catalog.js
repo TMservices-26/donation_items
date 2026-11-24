@@ -439,8 +439,8 @@ const items = [
       "quantity":  6,
       "description":  "",
       "images":  [
-  
-                 ]
+        "images/dm2616125-40-01.jpg"
+      ]
   },
     {
       "id":  "dm2616125-41",
