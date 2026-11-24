@@ -1,4 +1,4 @@
-const items = [
+﻿const items = [
   {
     "id": "dm2616125",
     "name": "Wooden Arm Chair",
@@ -10,19 +10,6 @@ const items = [
       "images/dm2616125-01.jpg"
     ],
     "description": "wooden armchair with a curved backrest and seat, upholstered in beige fabric"
-  },
-  {
-    "id": "dm2616125-d3",
-    "name": "Green Task Chairs",
-    "category": "Chairs",
-    "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    "ticketNumber": "DM2616125-D3",
-    "quantity": 4,
-    "images": [
-      "images/dm2616125-d3-01.jpg",
-      "images/dm2616125-d3-02.jpg"
-    ],
-    "description": "mesh office chairs with green and yellow checkered seats"
   },
   {
     "id": "dm2616125-07",
@@ -153,19 +140,6 @@ const items = [
     "description": "6' X 7'6\" L-shaped office desk with a right return, featuring a white countertop, black base, and a matching storage cabinet. 2 left units and one right unit available"
   },
   {
-    "id": "dm2616125-25",
-    "name": "Liberty Ocean Office Chair",
-    "category": "Chairs",
-    "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    "ticketNumber": "DM2616125-25",
-    "quantity": 7,
-    "images": [
-      "images/dm2616125-25-01.jpg",
-      "images/dm2616125-25-02.jpg"
-    ],
-    "description": "Humanscale Liberty Ocean office chair with a high-back mesh design, padded seat, and adjustable armrests"
-  },
-  {
     "id": "dm2616125-26",
     "name": "Salamander AV Cabinet",
     "category": "AV Cabinets",
@@ -191,31 +165,6 @@ const items = [
       "images/dm2616125-27-03.jpg"
     ],
     "description": "White Guest Chair with a modern design, featuring a white upholstered seat and backrest framed by dark wooden armrests and legs. Some cracking on the leather."
-  },
-  {
-    "id": "dm2616125-28",
-    "name": "Haworth Zody Task Chair",
-    "category": "Chairs",
-    "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    "ticketNumber": "DM2616125-28",
-    "quantity": 15,
-    "onHold": 15,
-    "images": [
-      "images/dm2616125-28-01.jpg"
-    ],
-    "description": "Haworth Zody Mesh Back Task Chair with a high backrest, cushioned seat, and adjustable armrests"
-  },
-  {
-    "id": "dm2616125-29",
-    "name": "Task Chair",
-    "category": "Chairs",
-    "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
-    "ticketNumber": "DM2616125-29",
-    "quantity": 1,
-    "images": [
-      "images/dm2616125-29-01.jpg"
-    ],
-    "description": "office chair with a mesh backrest, cushioned seat, and adjustable armrests"
   },
   {
     "id": "dm2616125-30",
@@ -479,6 +428,91 @@ const items = [
       "images/CR2618669 - Cedar Rapids Donatable Items-6a6a830b.jpeg",
       "images/CR2618669 - Cedar Rapids Donatable Items-6a6a830bf.jpeg"
     ]
+  }
+,
+    {
+      "id":  "dm2616125-39",
+      "name":  "Aeron Task Chair",
+      "category":  "Chairs",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-39",
+      "quantity":  1,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-40",
+      "name":  "Leather Chair Tall Back",
+      "category":  "Chairs",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-40",
+      "quantity":  6,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-41",
+      "name":  "Leather Chair Round Back",
+      "category":  "Chairs",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-41",
+      "quantity":  4,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-42",
+      "name":  "Allsteel Task Chair",
+      "category":  "Chairs",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-42",
+      "quantity":  9,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-43",
+      "name":  "Allsteel Fabric Back",
+      "category":  "Needs Review",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-43",
+      "quantity":  4,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-44",
+      "name":  "Grey Guest Chair",
+      "category":  "Chairs",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-44",
+      "quantity":  3,
+      "description":  "",
+      "images":  [
+  
+                 ]
+  },
+    {
+      "id":  "dm2616125-45",
+      "name":  "Lockable Wooden Cabinet",
+      "category":  "Storage",
+      "location":  "4175 Northeast 43rd Court, Des Moines, IA 50317",
+      "ticketNumber":  "DM2616125-45",
+      "quantity":  2,
+      "description":  "",
+      "images":  [
+                     "images/dm2616125-45-01.jpg"
+                 ]
   }
 ];
 const catalogView = document.querySelector("#catalog-view");
