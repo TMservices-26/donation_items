@@ -1,4 +1,4 @@
-﻿const items = [
+const items = [
   {
     "id": "dm2616125",
     "name": "Wooden Arm Chair",
