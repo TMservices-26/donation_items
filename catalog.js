@@ -261,11 +261,11 @@ const items = [
     "category": "Tables",
     "location": "4175 Northeast 43rd Court, Des Moines, IA 50317",
     "ticketNumber": "DM2616125-37",
-    "quantity": 2,
+    "quantity": 4,
     "images": [
       "images/dm2616125-37-01.jpg"
     ],
-    "description": "36in Round glass coffee height table with a smooth, glossy white surface"
+    "description": "2 36in Round glass coffee height table with a smooth, glossy white surface. 2 matching smaller end tables (not pictured)"
   },
   {
     "id": "dm2616125-38",
